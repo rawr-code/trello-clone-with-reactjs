@@ -4,6 +4,7 @@ import MainContainer from "./components/Atoms/MainContainer";
 
 import Header from "./components/Molecules/Header";
 import Scrum from "./components/Organisms/Scrum";
+import { StoreProvider } from "./context/store/StoreContext";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -38,11 +39,13 @@ const GlobalStyle = createGlobalStyle`
 
 const App: React.FC = () => {
   return (
-    <MainContainer>
-      <GlobalStyle />
-      <Header />
-      <Scrum />
-    </MainContainer>
+    <StoreProvider>
+      <MainContainer>
+        <GlobalStyle />
+        <Header />
+        <Scrum />
+      </MainContainer>
+    </StoreProvider>
   );
 };
 
