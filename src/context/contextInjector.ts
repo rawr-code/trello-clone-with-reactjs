@@ -13,11 +13,12 @@ export const ProviderCreator = <State, Action extends AnyAction>(
     static state: State;
     state = defaultState;
 
-    dispatch(action: Action) {
+    dispatch = (action: Action) => {
       this.setState((prevState) => {
         return reducer(prevState, action);
       });
-    }
+    };
+
     render() {
       const { Provider } = context;
       return createElement(Provider, {

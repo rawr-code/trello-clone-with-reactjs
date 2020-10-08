@@ -1,13 +1,33 @@
-export const GET_IMAGES_SUCCESS = "imgur/GET_IMAGES_SUCCESS";
-export const GET_IMAGES_FAIL = "imgur/GET_IMAGES_FAIL";
-export const GET_IMAGES = "imgur/GET_IMAGES";
-export const SET_TOKEN = "imgur/SET_TOKEN";
-export const SET_SCORE = "imgur/SET_SCORE";
-export const LOGOUT = "imgur/LOGOUT";
+export const ADD_BOARD = "scrum/ADD_BOARD";
+export const MOVE_STASK = "scrum/MOVE_STASK";
 
-export const setToken = (token: string) => {
+export const addBoard = () => {
   return {
-    type: SET_TOKEN,
-    token,
+    type: ADD_BOARD,
+    payload: {
+      title: "test",
+    },
+  };
+};
+
+export interface Task {
+  title: string;
+}
+
+interface TaskInfo {
+  position: number;
+  container: string;
+  data: Task;
+}
+
+export const moveTask = (props: TaskInfo) => {
+  const { container, position, data } = props;
+  return {
+    type: MOVE_STASK,
+    payload: {
+      container,
+      position,
+      data,
+    },
   };
 };

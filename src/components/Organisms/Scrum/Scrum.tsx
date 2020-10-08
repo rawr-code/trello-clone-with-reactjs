@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Sortable } from "@shopify/draggable";
 
+import { useAddBoard, useMoveTask } from "../../../context/store/StoreHooks";
+
 import TasksContainer from "../TasksContainer";
 
 const Scrum = styled.div`
@@ -14,6 +16,9 @@ const Scrum = styled.div`
 `;
 
 const ScrumComponent: React.FC = () => {
+  const addBoard = useAddBoard();
+  const moveTask = useMoveTask();
+
   const containerId = "task_container";
 
   useEffect(() => {
@@ -30,9 +35,22 @@ const ScrumComponent: React.FC = () => {
         const currentId = oldContainer.parentElement?.id;
         const parentId = newContainer.parentElement?.id;
 
-        console.log({ currentId, parentId, moved: currentId !== parentId });
+        const changeContainer = currentId !== parentId;
+        const changePosition = oldIndex !== newIndex;
+
+        moveTask({
+          container: "parentId",
+          position: newIndex,
+          data: {
+            title: "aqui",
+          },
+        });
+
+        console.log({ changePosition, changeContainer });
       });
     }
+
+    addBoard();
   }, []);
 
   return (
