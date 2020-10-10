@@ -1,33 +1,23 @@
-export const ADD_BOARD = "scrum/ADD_BOARD";
-export const MOVE_STASK = "scrum/MOVE_STASK";
+import { ADD_BOARD, ADD_STASK, REMOVE_STASK } from "./StoreConstants";
+import { Board, MoveTaskBoard } from "./StoreTypes";
 
-export const addBoard = () => {
+export const addBoard = (board: Board) => {
   return {
     type: ADD_BOARD,
-    payload: {
-      title: "test",
-    },
+    payload: board,
   };
 };
 
-export interface Task {
-  title: string;
-}
-
-interface TaskInfo {
-  position: number;
-  container: string;
-  data: Task;
-}
-
-export const moveTask = (props: TaskInfo) => {
-  const { container, position, data } = props;
+export const addTask = (payload: MoveTaskBoard) => {
   return {
-    type: MOVE_STASK,
-    payload: {
-      container,
-      position,
-      data,
-    },
+    type: ADD_STASK,
+    payload,
+  };
+};
+
+export const removeTask = (payload: MoveTaskBoard) => {
+  return {
+    type: REMOVE_STASK,
+    payload,
   };
 };

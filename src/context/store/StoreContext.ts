@@ -2,17 +2,13 @@ import { createContext } from "react";
 import { ManageContext } from "../../types/stateManagement";
 import { ProviderCreator } from "../contextInjector";
 import { storeReducer } from "./StoreReducer";
-
-export interface Task {
-  title: string;
-}
-
-export interface Board {
-  title: string;
-}
+import { Board } from "./StoreTypes";
 
 export interface StoreState {
-  containers: Board[];
+  boards: Board[];
+  // containers: {
+  //   [name: string]: Board;
+  // };
 }
 
 export type StoreAction = {
@@ -23,7 +19,7 @@ export type StoreAction = {
 export type StoreCtx = ManageContext<StoreState, StoreAction>;
 
 export const INITIAL_STATE: StoreState = {
-  containers: [],
+  boards: [],
 };
 
 export const StoreContext = createContext<StoreCtx>({

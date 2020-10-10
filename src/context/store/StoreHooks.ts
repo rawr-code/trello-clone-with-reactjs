@@ -1,25 +1,34 @@
 import { useContext } from "react";
-import { addBoard, moveTask } from "./StoreActions";
-import { StoreContext, StoreCtx } from "./StoreContext";
+import { addBoard, addTask, removeTask } from "./StoreActions";
+import { StoreContext, StoreCtx, StoreState } from "./StoreContext";
+import { Board, MoveTaskBoard } from "./StoreTypes";
+
+export const useStoreState = (): StoreState => {
+  const { state } = useContext<StoreCtx>(StoreContext);
+  return state;
+};
 
 export const useAddBoard = () => {
   const { dispatch } = useContext<StoreCtx>(StoreContext);
 
-  return () => dispatch(addBoard());
+  return (board: Board) => dispatch(addBoard(board));
 };
 
-export interface Task {
-  title: string;
-}
-
-interface TaskInfo {
-  position: number;
-  container: string;
-  data: Task;
-}
-
-export const useMoveTask = () => {
+export const useMoveTaskBoard = () => {
   const { dispatch } = useContext<StoreCtx>(StoreContext);
 
-  return (props: TaskInfo) => dispatch(moveTask(props));
+  const addToBoard = (payload: MoveTaskBoard) => {
+    dispatch(addTask(payload));
+  };
+
+  const removeFromBoard = (payload: MoveTaskBoard) => {
+    dispatch(removeTask(payload));
+  };
+
+  // const RelocatedOnBoard = () => {};
+
+  return {
+    addToBoard,
+    removeFromBoard,
+  };
 };
