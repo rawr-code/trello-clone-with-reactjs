@@ -14,4 +14,6 @@ export interface Board {
 export interface MoveTaskBoard {
   boardId: string;
   task: Task;
+  from?: number | null;
+  to?: number | null;
 }

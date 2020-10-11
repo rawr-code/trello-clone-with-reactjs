@@ -1,34 +1,26 @@
 import { createContext } from "react";
-import { ManageContext } from "../../types/stateManagement";
+import { Action, ManageContext } from "../../types/stateManagement";
 import { ProviderCreator } from "../contextInjector";
 import { storeReducer } from "./StoreReducer";
 import { Board } from "./StoreTypes";
 
 export interface StoreState {
   boards: Board[];
-  // containers: {
-  //   [name: string]: Board;
-  // };
 }
-
-export type StoreAction = {
-  type: string;
-  payload?: any;
-};
-
-export type StoreCtx = ManageContext<StoreState, StoreAction>;
 
 export const INITIAL_STATE: StoreState = {
   boards: [],
 };
 
-export const StoreContext = createContext<StoreCtx>({
+export type StoreContext = ManageContext<StoreState>;
+
+export const storeContext = createContext<StoreContext>({
   state: INITIAL_STATE,
   dispatch: (action) => {},
 });
 
-export const StoreProvider = ProviderCreator<StoreState, StoreAction>(
+export const StoreProvider = ProviderCreator<StoreState, Action>(
   INITIAL_STATE,
   storeReducer,
-  StoreContext
+  storeContext
 );

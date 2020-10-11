@@ -1,21 +1,21 @@
 import { useContext } from "react";
-import { addBoard, addTask, removeTask } from "./StoreActions";
-import { StoreContext, StoreCtx, StoreState } from "./StoreContext";
+import { addBoard, addTask, relocatedTask, removeTask } from "./StoreActions";
+import { storeContext, StoreContext, StoreState } from "./StoreContext";
 import { Board, MoveTaskBoard } from "./StoreTypes";
 
 export const useStoreState = (): StoreState => {
-  const { state } = useContext<StoreCtx>(StoreContext);
+  const { state } = useContext<StoreContext>(storeContext);
   return state;
 };
 
 export const useAddBoard = () => {
-  const { dispatch } = useContext<StoreCtx>(StoreContext);
+  const { dispatch } = useContext<StoreContext>(storeContext);
 
   return (board: Board) => dispatch(addBoard(board));
 };
 
 export const useMoveTaskBoard = () => {
-  const { dispatch } = useContext<StoreCtx>(StoreContext);
+  const { dispatch } = useContext<StoreContext>(storeContext);
 
   const addToBoard = (payload: MoveTaskBoard) => {
     dispatch(addTask(payload));
@@ -25,10 +25,13 @@ export const useMoveTaskBoard = () => {
     dispatch(removeTask(payload));
   };
 
-  // const RelocatedOnBoard = () => {};
+  const relocatedOnBoard = (payload: MoveTaskBoard) => {
+    dispatch(relocatedTask(payload));
+  };
 
   return {
     addToBoard,
     removeFromBoard,
+    relocatedOnBoard,
   };
 };

@@ -6,7 +6,7 @@ export const ProviderCreator = <State, Action extends AnyAction>(
   reducer: Reducer<State, Action>,
   context: React.Context<ManageContext<State, Action>>
 ) =>
-  class ProviderComponent extends Component<
+  class PoviderComponent extends Component<
     { children: React.ReactNode },
     State
   > {
@@ -14,13 +14,12 @@ export const ProviderCreator = <State, Action extends AnyAction>(
     state = defaultState;
 
     dispatch = (action: Action) => {
-      this.setState((prevState) => {
-        return reducer(prevState, action);
-      });
+      this.setState((prevState) => reducer(prevState, action));
     };
 
     render() {
       const { Provider } = context;
+
       return createElement(Provider, {
         children: this.props.children,
         value: {
