@@ -1,77 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { Sortable } from "@shopify/draggable";
+import { useStoreState } from "../../../context/store/StoreHooks";
+import Board from "../../Molecules/Board";
 
-import { useAddBoard, useMoveTask } from "../../../context/store/StoreHooks";
+const ScrumContainer = styled.div`
+  user-select: none;
 
-import TasksContainer from "../TasksContainer";
+  white-space: nowrap;
+  margin: 8px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  top: 60px;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
-const Scrum = styled.div`
-  width: 100%;
-  max-width: 100vw;
-  height: calc(100vh - 60px);
-
-  display: flex;
-  overflow-y: auto;
+  & > :first-child {
+    margin-left: 8px;
+  }
+  & > :last-child {
+    margin-right: 8px;
+  }
 `;
 
-const ScrumComponent: React.FC = () => {
-  const addBoard = useAddBoard();
-  const moveTask = useMoveTask();
-
-  const containerId = "task_container";
-
-  useEffect(() => {
-    const containers = document.querySelectorAll(`#${containerId}`);
-
-    if (containers) {
-      const sortable = new Sortable(containers, {
-        draggable: "article",
-      });
-
-      sortable.on("sortable:stop", (e) => {
-        const { newContainer, oldContainer, newIndex, oldIndex } = e;
-
-        const currentId = oldContainer.parentElement?.id;
-        const parentId = newContainer.parentElement?.id;
-
-        const changeContainer = currentId !== parentId;
-        const changePosition = oldIndex !== newIndex;
-
-        moveTask({
-          container: "parentId",
-          position: newIndex,
-          data: {
-            title: "aqui",
-          },
-        });
-
-        console.log({ changePosition, changeContainer });
-      });
-    }
-
-    addBoard();
-  }, []);
+const Scrum: React.FC = () => {
+  const { boards } = useStoreState();
 
   return (
-    <Scrum>
-      <TasksContainer
-        containerName="to_do"
-        containerId={containerId}
-        title="To do"
-      />
-      <TasksContainer
-        containerName="in_progress"
-        containerId={containerId}
-        title="In Progress"
-      />
-      <TasksContainer
-        containerName="done"
-        containerId={containerId}
-        title="Done"
-      />
-    </Scrum>
+    <ScrumContainer>
+      {boards.map((ctn) => (
+        <Board key={ctn.id} {...ctn} />
+      ))}
+    </ScrumContainer>
   );
 };
 
-export default ScrumComponent;
+export default Scrum;

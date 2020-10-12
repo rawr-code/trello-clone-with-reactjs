@@ -1,3 +1,4 @@
+import { Persistor } from "../../utils/persistor";
 import {
   ADD_BOARD,
   ADD_STASK,
@@ -13,72 +14,76 @@ function move(arr: any[], from: any, to: any) {
   return arr;
 }
 
+export const storePersistor = Persistor<StoreState>("store_data");
+
 export function storeReducer(
   state = INITIAL_STATE,
   action: StoreActionTypes
 ): StoreState {
-  console.log({ action });
-  switch (action.type) {
-    case ADD_BOARD:
-      return {
-        ...state,
-        boards: [...state.boards, action.payload],
-      };
+  return storePersistor.set(
+    (() => {
+      switch (action.type) {
+        case ADD_BOARD:
+          return {
+            ...state,
+            boards: [...state.boards, action.payload],
+          };
 
-    case RELOCATED_STASK:
-      return {
-        ...state,
-        boards: [
-          ...state.boards.map((board) => {
-            if (board.id === action.payload.boardId) {
-              const { from, to } = action.payload;
-              const newTasks = move([...board.tasks], from, to);
-              return { ...board, tasks: newTasks };
-            }
+        case RELOCATED_STASK:
+          return {
+            ...state,
+            boards: [
+              ...state.boards.map((board) => {
+                if (board.id === action.payload.boardId) {
+                  const { from, to } = action.payload;
+                  const newTasks = move([...board.tasks], from, to);
+                  return { ...board, tasks: newTasks };
+                }
 
-            return board;
-          }),
-        ],
-      };
+                return board;
+              }),
+            ],
+          };
 
-    case ADD_STASK:
-      return {
-        ...state,
-        boards: [
-          ...state.boards.map((board) => {
-            if (board.id === action.payload.boardId) {
-              const { to, task } = action.payload;
-              const newTasks = [...board.tasks];
-              if (to) {
-                newTasks.splice(to, 0, task);
-              }
-              return { ...board, tasks: newTasks };
-            }
+        case ADD_STASK:
+          return {
+            ...state,
+            boards: [
+              ...state.boards.map((board) => {
+                if (board.id === action.payload.boardId) {
+                  const { to, task } = action.payload;
+                  const newTasks = [...board.tasks];
+                  newTasks.splice(to || 0, 0, task);
 
-            return board;
-          }),
-        ],
-      };
+                  return { ...board, tasks: newTasks };
+                }
 
-    case REMOVE_STASK:
-      return {
-        ...state,
-        boards: [
-          ...state.boards.map((board) => {
-            if (board.id === action.payload.boardId) {
-              const tasks = board.tasks.filter(
-                (task) => task.id !== action.payload.task.id
-              );
+                return board;
+              }),
+            ],
+          };
 
-              return { ...board, tasks };
-            }
+        case REMOVE_STASK:
+          return {
+            ...state,
+            boards: [
+              ...state.boards.map((board) => {
+                if (board.id === action.payload.boardId) {
+                  const tasks = board.tasks.filter(
+                    (task) => task.id !== action.payload.task.id
+                  );
 
-            return board;
-          }),
-        ],
-      };
+                  return { ...board, tasks };
+                }
 
-    default:
-      return state;
-  }
+                return board;
+              }),
+            ],
+          };
+
+        default:
+          return state;
+      }
+    })()
+  );
 }

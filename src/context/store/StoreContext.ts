@@ -1,14 +1,14 @@
 import { createContext } from "react";
 import { ManageContext } from "../../types/stateManagement";
 import { ProviderCreator } from "../contextInjector";
-import { storeReducer } from "./StoreReducer";
+import { storeReducer, storePersistor } from "./StoreReducer";
 import { Board, StoreActionTypes } from "./StoreTypes";
 
 export interface StoreState {
   boards: Board[];
 }
 
-export const INITIAL_STATE: StoreState = {
+export const INITIAL_STATE: StoreState = storePersistor.get() || {
   boards: [],
 };
 

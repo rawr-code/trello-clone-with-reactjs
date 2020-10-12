@@ -15,11 +15,21 @@ const GlobalStyle = createGlobalStyle`
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 
     background-color: #282c34;
-    color: #ffffff;
+    /* color: #ffffff; */
   }
 
-  h1,h2,h3,h4,h5,h6,p {
-    margin: 0
+  h2,h3,h4,h5,h6,p {
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  h2 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  input,textarea {
+    font-size: 14px;
   }
 
   &::-webkit-scrollbar {
