@@ -1,4 +1,3 @@
-import { Action } from "../../types/stateManagement";
 import {
   ADD_BOARD,
   ADD_STASK,
@@ -6,8 +5,9 @@ import {
   RELOCATED_STASK,
 } from "./StoreConstants";
 import { INITIAL_STATE, StoreState } from "./StoreContext";
+import { StoreActionTypes } from "./StoreTypes";
 
-function move(arr: any[], from: number, to: number) {
+function move(arr: any[], from: any, to: any) {
   const elm = arr.splice(from, 1)[0];
   arr.splice(to, 0, elm);
   return arr;
@@ -15,9 +15,9 @@ function move(arr: any[], from: number, to: number) {
 
 export function storeReducer(
   state = INITIAL_STATE,
-  action: Action
+  action: StoreActionTypes
 ): StoreState {
-  // console.log({ action });
+  console.log({ action });
   switch (action.type) {
     case ADD_BOARD:
       return {
@@ -33,7 +33,6 @@ export function storeReducer(
             if (board.id === action.payload.boardId) {
               const { from, to } = action.payload;
               const newTasks = move([...board.tasks], from, to);
-
               return { ...board, tasks: newTasks };
             }
 
@@ -50,8 +49,9 @@ export function storeReducer(
             if (board.id === action.payload.boardId) {
               const { to, task } = action.payload;
               const newTasks = [...board.tasks];
-              newTasks.splice(to, 0, task);
-
+              if (to) {
+                newTasks.splice(to, 0, task);
+              }
               return { ...board, tasks: newTasks };
             }
 

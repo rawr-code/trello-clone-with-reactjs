@@ -4,38 +4,32 @@ import {
   RELOCATED_STASK,
   REMOVE_STASK,
 } from "./StoreConstants";
-import { Board, MoveTaskBoard } from "./StoreTypes";
+import { Board, MoveTaskBoard, StoreActionTypes } from "./StoreTypes";
 
-export const addBoard = (board: Board) => {
+export const addBoard = (board: Board): StoreActionTypes => {
   return {
     type: ADD_BOARD,
     payload: board,
   };
 };
 
-export const addTask = (payload: MoveTaskBoard) => {
+export const addTask = (payload: MoveTaskBoard): StoreActionTypes => {
   return {
     type: ADD_STASK,
     payload,
   };
 };
 
-export const removeTask = (payload: MoveTaskBoard) => {
+export const removeTask = (payload: MoveTaskBoard): StoreActionTypes => {
   return {
     type: REMOVE_STASK,
     payload,
   };
 };
 
-export const relocatedTask = (payload: MoveTaskBoard) => {
+export const relocatedTask = (payload: MoveTaskBoard): StoreActionTypes => {
   return {
     type: RELOCATED_STASK,
     payload,
   };
 };
-
-export type Actions =
-  | ReturnType<typeof addBoard>
-  | ReturnType<typeof addTask>
-  | ReturnType<typeof removeTask>
-  | ReturnType<typeof relocatedTask>;
