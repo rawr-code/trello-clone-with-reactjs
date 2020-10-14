@@ -28,9 +28,15 @@ const GlobalStyle = createGlobalStyle`
     line-height: 24px;
   }
 
-  input,textarea {
+  input,textarea,button {
     font-size: 14px;
+
+    &:focus {
+    outline: none;
+    }
   }
+
+  
 
   &::-webkit-scrollbar {
     width: 12px;
