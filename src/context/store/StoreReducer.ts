@@ -4,6 +4,8 @@ import {
   ADD_STASK,
   REMOVE_STASK,
   RELOCATED_STASK,
+  ADD_STASK_ON_BOARD,
+  REMOVE_STASK_ON_BOARD,
 } from "./StoreConstants";
 import { INITIAL_STATE, StoreState } from "./StoreContext";
 import { StoreActionTypes } from "./StoreTypes";
@@ -27,6 +29,43 @@ export function storeReducer(
           return {
             ...state,
             boards: [...state.boards, action.payload],
+          };
+
+        case ADD_STASK_ON_BOARD:
+          return {
+            ...state,
+            boards: [
+              ...state.boards.map((board) => {
+                if (board.id === action.payload.boardId) {
+                  const newTasks = [...board.tasks];
+                  newTasks.push(action.payload);
+
+                  return { ...board, tasks: newTasks };
+                }
+
+                return board;
+              }),
+            ],
+          };
+        case REMOVE_STASK_ON_BOARD:
+          return {
+            ...state,
+            boards: [
+              ...state.boards.map((board) => {
+                if (board.id === action.payload.boardId) {
+                  const newTasks = [
+                    ...board.tasks.filter(
+                      (task) => task.id !== action.payload.id
+                    ),
+                  ];
+                  console.log({ newTasks });
+                  
+                  return { ...board, tasks: newTasks };
+                }
+
+                return board;
+              }),
+            ],
           };
 
         case RELOCATED_STASK:
