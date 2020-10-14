@@ -4,10 +4,11 @@ import { useStoreState } from "../../../context/store/StoreHooks";
 import Board from "../../Molecules/Board";
 
 const ScrumContainer = styled.div`
+  flex-grow: 1;
   user-select: none;
 
   white-space: nowrap;
-  margin: 8px 0;
+  margin: 8px 0 0;
   overflow-x: auto;
   overflow-y: hidden;
   padding-bottom: 8px;
