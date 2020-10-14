@@ -1,3 +1,8 @@
+import {
+  changePositionIntoArray,
+  pushItemIntoArray,
+  removeItemFromArray,
+} from "../../utils/orderData";
 import { Persistor } from "../../utils/persistor";
 import {
   ADD_BOARD,
@@ -9,12 +14,6 @@ import {
 } from "./StoreConstants";
 import { INITIAL_STATE, StoreState } from "./StoreContext";
 import { StoreActionTypes } from "./StoreTypes";
-
-function move(arr: any[], from: any, to: any) {
-  const elm = arr.splice(from, 1)[0];
-  arr.splice(to, 0, elm);
-  return arr;
-}
 
 export const storePersistor = Persistor<StoreState>("store_data");
 
@@ -37,30 +36,28 @@ export function storeReducer(
             boards: [
               ...state.boards.map((board) => {
                 if (board.id === action.payload.boardId) {
-                  const newTasks = [...board.tasks];
-                  newTasks.push(action.payload);
-
-                  return { ...board, tasks: newTasks };
+                  return { ...board, tasks: [...board.tasks, action.payload] };
                 }
 
                 return board;
               }),
             ],
           };
+
         case REMOVE_STASK_ON_BOARD:
           return {
             ...state,
             boards: [
               ...state.boards.map((board) => {
                 if (board.id === action.payload.boardId) {
-                  const newTasks = [
-                    ...board.tasks.filter(
-                      (task) => task.id !== action.payload.id
+                  return {
+                    ...board,
+                    tasks: removeItemFromArray(
+                      board.tasks,
+                      "id",
+                      action.payload.id
                     ),
-                  ];
-                  console.log({ newTasks });
-                  
-                  return { ...board, tasks: newTasks };
+                  };
                 }
 
                 return board;
@@ -75,8 +72,14 @@ export function storeReducer(
               ...state.boards.map((board) => {
                 if (board.id === action.payload.boardId) {
                   const { from, to } = action.payload;
-                  const newTasks = move([...board.tasks], from, to);
-                  return { ...board, tasks: newTasks };
+                  return {
+                    ...board,
+                    tasks: changePositionIntoArray(
+                      board.tasks,
+                      from || 0,
+                      to || 0
+                    ),
+                  };
                 }
 
                 return board;
@@ -91,10 +94,12 @@ export function storeReducer(
               ...state.boards.map((board) => {
                 if (board.id === action.payload.boardId) {
                   const { to, task } = action.payload;
-                  const newTasks = [...board.tasks];
-                  newTasks.splice(to || 0, 0, task);
+                  const newTask = { ...task, boardId: board.id };
 
-                  return { ...board, tasks: newTasks };
+                  return {
+                    ...board,
+                    tasks: pushItemIntoArray(board.tasks, to || 0, newTask),
+                  };
                 }
 
                 return board;
@@ -108,11 +113,14 @@ export function storeReducer(
             boards: [
               ...state.boards.map((board) => {
                 if (board.id === action.payload.boardId) {
-                  const tasks = board.tasks.filter(
-                    (task) => task.id !== action.payload.task.id
-                  );
-
-                  return { ...board, tasks };
+                  return {
+                    ...board,
+                    tasks: removeItemFromArray(
+                      board.tasks,
+                      "id",
+                      action.payload.task.id
+                    ),
+                  };
                 }
 
                 return board;
