@@ -1,19 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
-interface Props {
-  title: number;
-}
-
-const Task = styled.article`
-  border: 1px solid #e5e5e5;
-  background-color: #fff;
-  max-width: 257px;
-  border-radius: 4px;
-  margin-bottom: 1rem;
+const TaskWrapper = styled.div`
   padding: 8px;
+  padding-top: 0;
+`;
 
+const TaskContent = styled.div`
+  position: relative;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 8px;
   cursor: pointer;
+  display: block;
+
+  max-width: 300px;
+  min-height: 20px;
+  position: relative;
+  text-decoration: none;
+  z-index: 0;
+
   box-shadow: 0 1px 3px 0 rgba(21, 27, 38, 0.15);
   transition: -webkit-box-shadow 0.25s;
   transition: box-shadow 0.25s;
@@ -21,36 +27,61 @@ const Task = styled.article`
 
   &:hover {
     box-shadow: 0px 6px 20px 0 rgba(21, 27, 38, 0.2);
+    & > :first-child {
+      display: block;
+    }
   }
 `;
 
-const TaskTitle = styled.h3`
-  font-size: 18px;
+const TaskTitle = styled.span`
+  font-size: 14px;
   color: rgb(42, 59, 71);
+
+  clear: both;
+  display: block;
+  margin: 0 0 4px;
+  overflow: hidden;
+  text-decoration: none;
+  word-wrap: break-word;
+  color: #172b4d;
 `;
 
-const TaskDescription = styled.p`
+const TaskRemoveButton = styled.button`
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
   font-size: 14px;
-  margin: 4px 0;
-  color: rgb(87, 94, 102);
+  font-weight: bold;
+  color: #172b4d;
+  margin: 8px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+
+  border-bottom-left-radius: 10px;
+  padding-left: 1px;
+  padding-bottom: 1px;
 `;
 
-const TaskDate = styled.p`
-  font-size: 14px;
-  color: rgb(87, 94, 102);
-`;
+interface Props {
+  title: string;
+  handleRemove: () => void;
+}
 
-const TaskComponent: React.FC<Props> = ({ title }) => {
+const Task: React.FC<Props> = ({ title, handleRemove }) => {
   return (
-    <Task>
-      <TaskTitle>{title}</TaskTitle>
-      <TaskDescription>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Explicabo, est
-        debitis
-      </TaskDescription>
-      <TaskDate>12/08/1997</TaskDate>
-    </Task>
+    <TaskWrapper>
+      <TaskContent>
+        <TaskRemoveButton onClick={handleRemove}>X</TaskRemoveButton>
+        <TaskTitle>{title}</TaskTitle>
+      </TaskContent>
+    </TaskWrapper>
   );
 };
 
-export default TaskComponent;
+export default Task;
